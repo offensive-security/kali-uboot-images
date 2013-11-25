@@ -202,6 +202,9 @@ function check_utilities() {
 	good_msg "Checking for utilities..."
 
 	check_utility "diff"		|| return 1;
+	check_utility "grep"		|| return 1;
+	check_utility "sed"		|| return 1;
+	check_utility "hexdump"		|| return 1;
 	check_utility "dd"		|| return 1;
 	check_utility "flash_erase"	|| return 1;
 
