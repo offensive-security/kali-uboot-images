@@ -282,5 +282,5 @@ erase_spi_flash			|| error_exit 5;
 write_bootloader		|| error_exit 6;
 check_bootloader		|| error_exit 7;
 
-good_msg "Boot loader update succeeded!"
+good_msg "Boot loader update succeeded!\n"
 
