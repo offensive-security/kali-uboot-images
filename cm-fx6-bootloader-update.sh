@@ -186,29 +186,27 @@ function check_bootloader_versions() {
 	return 1;
 }
 
-function check_utilities() {
-	local FLASH_ERASE=`which flash_erase`
-	local DDD=`which dd`
-	local DIFF=`which diff`
+function check_utility() {
+	local util_name="$1"
+	local utility=`which "$util_name"`
 
+	if [[ -z "$utility" || ! -x $utility ]]; then
+		bad_msg "Can't find $util_name utility! Please install $util_name before proceding!"
+		return 1;
+	fi
+
+	return 0;
+}
+
+function check_utilities() {
 	good_msg "Checking for utilities..."
 
-	if [[ -z "$FLASH_ERASE" || ! -x $FLASH_ERASE ]]; then
-		bad_msg "Can't find flash_erase utility, mtd-utils package not installed?"
-		return 1;
-	fi
-
-	if [ ! -x $DDD ]; then
-		bad_msg "Can't find dd utility! Please install dd before proceding!"
-		return 1;
-	fi
-
-	if [ ! -x $DIFF ]; then
-		bad_msg "Can't find diff utility! Please install diff before proceding!"
-		return 1;
-	fi
+	check_utility "diff"		|| return 1;
+	check_utility "dd"		|| return 1;
+	check_utility "flash_erase"	|| return 1;
 
 	good_msg "...Done"
+	echo ""
 	return 0;
 }
 
