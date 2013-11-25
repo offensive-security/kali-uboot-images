@@ -15,6 +15,10 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+UPDATER_VERSION="1.0"
+UPDATER_VERSION_DATE="Nov 21 2013"
+UPDATER_BANNER="CompuLab CM-FX6 (Utilite) boot loader update utility ${UPDATER_VERSION} (${UPDATER_VERSION_DATE})"
+
 NORMAL="\033[0m"
 WARN="\033[33;1m"
 BAD="\033[31;1m"
@@ -262,7 +266,7 @@ function error_exit() {
 }
 
 #main()
-echo "CompuLab CM-FX6 (Utilite) boot loader update utility 1.0 (Nov 21 2013)"
+echo -e "\n${UPDATER_BANNER}\n"
 
 get_bootloader_file_name	|| error_exit 1;
 check_spi_flash			|| error_exit 2;
