@@ -268,10 +268,10 @@ function error_exit() {
 #main()
 echo -e "\n${UPDATER_BANNER}\n"
 
+check_utilities			|| error_exit 4;
 get_bootloader_file_name	|| error_exit 1;
 check_spi_flash			|| error_exit 2;
 check_bootloader_versions	|| exit 0;
-check_utilities			|| error_exit 4;
 
 warn_msg "Do not power off or reset your computer!!!"
 
