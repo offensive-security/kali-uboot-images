@@ -180,6 +180,15 @@ function check_bootloader_versions() {
 			"No")
 				return 1;
 				;;
+			*)
+				case ${REPLY,,} in
+					"y"|"yes")
+						return 0;
+						;;
+					"n"|"no"|"abort")
+						return 1;
+						;;
+				esac
 		esac
 	done
 
