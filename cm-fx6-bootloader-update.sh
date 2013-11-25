@@ -62,7 +62,6 @@ MTD_DEV_FILE="/dev/${MTD_DEV}"
 CPU_NAME=""
 DRAM_NAME=""
 BOOTLOADER_FILE=""
-FLASH_ERASE=""
 
 function get_cpu() {
 	local cpu=`hexdump -C $EEPROM_DEV | grep 00000090 | sed 's/.*|\(C1[02DQM]*\)-.*/\1/g'`
@@ -188,20 +187,15 @@ function check_bootloader_versions() {
 }
 
 function check_utilities() {
-	FLASH_ERASE=`which flash_erase`
+	local FLASH_ERASE=`which flash_erase`
 	local DDD=`which dd`
 	local DIFF=`which diff`
 
 	good_msg "Checking for utilities..."
 
-	if [ ! -x $FLASH_ERASE ]; then
-		local FLASH_ERASE="./flash_erase"
-		if [ ! -x $FLASH_ERASE ]; then
-			bad_msg "Can't find flash_erase utility, mtd-utils package not installed?"
-			return 1;
-		fi
-
-		warn_msg "No flash_erase utility in path, trying to use $FLASH_ERASE"
+	if [[ -z "$FLASH_ERASE" || ! -x $FLASH_ERASE ]]; then
+		bad_msg "Can't find flash_erase utility, mtd-utils package not installed?"
+		return 1;
 	fi
 
 	if [ ! -x $DDD ]; then
@@ -221,7 +215,7 @@ function check_utilities() {
 function erase_spi_flash() {
 	good_msg "Erasing SPI flash..."
 
-	$FLASH_ERASE $MTD_DEV_FILE 0 0
+	flash_erase $MTD_DEV_FILE 0 0
 	if [ $? -ne 0 ]; then
 		bad_msg "Failed erasing SPI flash!"
 		bad_msg "If you reboot, your system might not boot anymore!"
