@@ -66,22 +66,30 @@ FLASH_ERASE=""
 
 function get_cpu() {
 	local cpu=`hexdump -C $EEPROM_DEV | grep 00000090 | sed 's/.*|\(C1[02DQM]*\)-.*/\1/g'`
+	local cpu_base="mx6"
 	local cpu_var=""
+	local cpu_type=""
 
 	case "$cpu" in
 		"C1000")
 			cpu_var="s"
+			cpu_type="s"
 			;;
-		"C1000DM" | "C1200QM")
+		"C1000DM")
 			cpu_var="q"
+			cpu_type="d"
+			;;
+		"C1200QM")
+			cpu_var="q"
+			cpu_type="q"
 			;;
 		*)
 			bad_msg "Can't find valid board data"
 			return 1;
 	esac
 
-	CPU_NAME="mx6$cpu_var"
-	good_msg "Board CPU:\t$CPU_NAME"
+	CPU_NAME="${cpu_base}${cpu_var}"
+	good_msg "Board CPU:\t${cpu_base}${cpu_type}"
 	return 0;
 }
 
